@@ -23,8 +23,8 @@ module Plutus
   # @author Michael Bulat
   class Entry < ActiveRecord::Base
     belongs_to :commercial_document, :polymorphic => true
-    has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'Plutus::CreditAmount'
-    has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'Plutus::DebitAmount'
+    has_many :credit_amounts, :extend => AmountsExtension, :class_name => 'Plutus::CreditAmount', :dependent => :destroy
+    has_many :debit_amounts, :extend => AmountsExtension, :class_name => 'Plutus::DebitAmount', :dependent => :destroy
     has_many :credit_accounts, :through => :credit_amounts, :source => :account, :class_name => 'Plutus::Account'
     has_many :debit_accounts, :through => :debit_amounts, :source => :account, :class_name => 'Plutus::Account'
 
@@ -40,7 +40,7 @@ module Plutus
     #   entry = Plutus::Entry.build(
     #     description: "Sold some widgets",
     #     debits: [
-    #       {account: "Accounts Receivable", amount: 50}], 
+    #       {account: "Accounts Receivable", amount: 50}],
     #     credits: [
     #       {account: "Sales Revenue", amount: 45},
     #       {account: "Sales Tax Payable", amount: 5}])
